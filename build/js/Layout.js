@@ -135,10 +135,14 @@ class Layout {
     // Activate layout height watcher
     this.fixLayoutHeight()
 
-    if (this._config.loginRegisterAutoHeight === true) {
-      this.fixLoginRegisterHeight()
-    } else if (this._config.loginRegisterAutoHeight === parseInt(this._config.loginRegisterAutoHeight, 10)) {
-      setInterval(this.fixLoginRegisterHeight, this._config.loginRegisterAutoHeight)
+    const $hasLoginRegister = $(SELECTOR_LOGIN_BOX + ', ' + SELECTOR_REGISTER_BOX)
+
+    if ($hasLoginRegister.length !== 0) {
+      if (this._config.loginRegisterAutoHeight === true) {
+        this.fixLoginRegisterHeight()
+      } else if (this._config.loginRegisterAutoHeight === parseInt(this._config.loginRegisterAutoHeight, 10)) {
+        setInterval(this.fixLoginRegisterHeight, this._config.loginRegisterAutoHeight)
+      }
     }
 
     $(SELECTOR_SIDEBAR)
