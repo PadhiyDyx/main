@@ -119,6 +119,11 @@ class ControlSidebar {
   // Private
 
   _init() {
+    // If we do not have the `LAYOUT_FIXED` class, return early
+    if (!$('body').hasClass(CLASS_NAME_LAYOUT_FIXED)) {
+      return
+    }
+
     this._fixHeight()
     this._fixScrollHeight()
 
@@ -140,11 +145,6 @@ class ControlSidebar {
 
   _fixScrollHeight() {
     const $body = $('body')
-
-    if (!$body.hasClass(CLASS_NAME_LAYOUT_FIXED)) {
-      return
-    }
-
     const heights = {
       scroll: $(document).height(),
       window: $(window).height(),
@@ -205,11 +205,6 @@ class ControlSidebar {
 
   _fixHeight() {
     const $body = $('body')
-
-    if (!$body.hasClass(CLASS_NAME_LAYOUT_FIXED)) {
-      return
-    }
-
     const heights = {
       window: $(window).height(),
       header: $(SELECTOR_HEADER).outerHeight(),
