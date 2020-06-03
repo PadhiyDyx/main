@@ -35,7 +35,7 @@ const Default = {
 class SiteSearch {
   constructor(_element, _options) {
     this.element = _element
-    this.options = $.extend({}, Default, _options)
+    this.options = { ...Default, ..._options }
   }
 
   // Public

@@ -44,7 +44,7 @@ const Default = {
 class PushMenu {
   constructor(element, options) {
     this._element = element
-    this._options = $.extend({}, Default, options)
+    this._options = { ...Default, ...options }
 
     if ($(SELECTOR_OVERLAY).length === 0) {
       this._addOverlay()
@@ -174,7 +174,7 @@ class PushMenu {
   static _jQueryInterface(operation) {
     return this.each(function () {
       let data = $(this).data(DATA_KEY)
-      const _options = $.extend({}, Default, $(this).data())
+      const _options = { ...Default, ...$(this).data() }
 
       if (!data) {
         data = new PushMenu(this, _options)

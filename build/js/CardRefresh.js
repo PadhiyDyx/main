@@ -47,7 +47,7 @@ class CardRefresh {
   constructor(element, settings) {
     this._element = element
     this._parent = element.parents(SELECTOR_CARD).first()
-    this._settings = $.extend({}, Default, settings)
+    this._settings = { ...Default, ...settings }
     this._overlay = $(this._settings.overlayTemplate)
 
     if (element.hasClass(CLASS_NAME_CARD)) {
@@ -105,7 +105,7 @@ class CardRefresh {
 
   static _jQueryInterface(config) {
     let data = $(this).data(DATA_KEY)
-    const _options = $.extend({}, Default, $(this).data())
+    const _options = { ...Default, ...$(this).data() }
 
     if (!data) {
       data = new CardRefresh($(this), _options)

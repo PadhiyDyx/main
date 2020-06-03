@@ -58,7 +58,7 @@ class CardWidget {
       this._parent = element
     }
 
-    this._settings = $.extend({}, Default, settings)
+    this._settings = { ...Default, ...settings }
   }
 
   collapse() {
@@ -179,7 +179,7 @@ class CardWidget {
 
   static _jQueryInterface(config) {
     let data = $(this).data(DATA_KEY)
-    const _options = $.extend({}, Default, $(this).data())
+    const _options = { ...Default, ...$(this).data() }
 
     if (!data) {
       data = new CardWidget($(this), _options)

@@ -184,7 +184,7 @@ class Toasts {
 
   static _jQueryInterface(option, config) {
     return this.each(function () {
-      const _options = $.extend({}, Default, config)
+      const _options = { ...Default, ...config }
       const toast = new Toasts($(this), _options)
 
       if (option === 'create') {

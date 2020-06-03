@@ -93,7 +93,7 @@ class Dropdown {
   static _jQueryInterface(config) {
     return this.each(function () {
       let data = $(this).data(DATA_KEY)
-      const _config = $.extend({}, Default, $(this).data())
+      const _config = { ...Default, ...$(this).data() }
 
       if (!data) {
         data = new Dropdown($(this), _config)

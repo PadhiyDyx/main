@@ -134,7 +134,7 @@ class Treeview {
   static _jQueryInterface(config) {
     return this.each(function () {
       let data = $(this).data(DATA_KEY)
-      const _options = $.extend({}, Default, $(this).data())
+      const _options = { ...Default, ...$(this).data() }
 
       if (!data) {
         data = new Treeview($(this), _options)
