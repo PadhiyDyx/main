@@ -54,51 +54,11 @@ class Layout {
 
   // Public
 
-  fixLayoutHeight(extra = null) {
-    const $body = $('body')
-    let controlSidebar = 0
+  fixLayoutHeight(extra) {
+    $(SELECTOR_CONTENT).css('min-height', this._getContentHeight(extra))
 
-    if ($body.hasClass(CLASS_NAME_CONTROL_SIDEBAR_SLIDE_OPEN) || $body.hasClass(CLASS_NAME_CONTROL_SIDEBAR_OPEN) || extra === 'control_sidebar') {
-      controlSidebar = $(SELECTOR_CONTROL_SIDEBAR_CONTENT).height()
-    }
-
-    const heights = {
-      window: $(window).height(),
-      header: $(SELECTOR_HEADER).length !== 0 ? $(SELECTOR_HEADER).outerHeight() : 0,
-      footer: $(SELECTOR_FOOTER).length !== 0 ? $(SELECTOR_FOOTER).outerHeight() : 0,
-      sidebar: $(SELECTOR_SIDEBAR).length !== 0 ? $(SELECTOR_SIDEBAR).height() : 0,
-      controlSidebar
-    }
-
-    const max = this._max(heights)
-    let offset = this._config.panelAutoHeight
-
-    if (offset === true) {
-      offset = 0
-    }
-
-    const $contentSelector = $(SELECTOR_CONTENT)
-
-    if (offset !== false) {
-      if (max === heights.controlSidebar) {
-        $contentSelector.css('min-height', (max + offset))
-      } else if (max === heights.window) {
-        $contentSelector.css('min-height', (max + offset) - heights.header - heights.footer)
-      } else {
-        $contentSelector.css('min-height', (max + offset) - heights.header)
-      }
-
-      if (this._isFooterFixed()) {
-        $contentSelector.css('min-height', parseFloat($contentSelector.css('min-height')) + heights.footer)
-      }
-    }
-
-    if (!$body.hasClass(CLASS_NAME_LAYOUT_FIXED)) {
+    if (!$('body').hasClass(CLASS_NAME_LAYOUT_FIXED)) {
       return
-    }
-
-    if (offset !== false) {
-      $contentSelector.css('min-height', (max + offset) - heights.header - heights.footer)
     }
 
     if (typeof $.fn.overlayScrollbars !== 'undefined') {
@@ -187,6 +147,51 @@ class Layout {
 
   _isFooterFixed() {
     return $(SELECTOR_FOOTER).css('position') === 'fixed'
+  }
+
+  _getContentHeight(extra = null) {
+    const $body = $('body')
+    let controlSidebar = 0
+
+    if ($body.hasClass(CLASS_NAME_CONTROL_SIDEBAR_SLIDE_OPEN) || $body.hasClass(CLASS_NAME_CONTROL_SIDEBAR_OPEN) || extra === 'control_sidebar') {
+      controlSidebar = $(SELECTOR_CONTROL_SIDEBAR_CONTENT).height()
+    }
+
+    const heights = {
+      window: $(window).height(),
+      header: $(SELECTOR_HEADER).length !== 0 ? $(SELECTOR_HEADER).outerHeight() : 0,
+      footer: $(SELECTOR_FOOTER).length !== 0 ? $(SELECTOR_FOOTER).outerHeight() : 0,
+      sidebar: $(SELECTOR_SIDEBAR).length !== 0 ? $(SELECTOR_SIDEBAR).height() : 0,
+      controlSidebar
+    }
+
+    const max = this._max(heights)
+    let offset = this._config.panelAutoHeight
+
+    if (offset === true) {
+      offset = 0
+    }
+
+    const $contentSelector = $(SELECTOR_CONTENT)
+    let height = 0
+
+    if (offset === false) {
+      return
+    }
+
+    if (max === heights.controlSidebar) {
+      height = max + offset
+    } else if (max === heights.window) {
+      height = (max + offset) - heights.header - heights.footer
+    } else {
+      height = (max + offset) - heights.header
+    }
+
+    if (this._isFooterFixed()) {
+      height = parseFloat($contentSelector.css('min-height')) + heights.footer
+    }
+
+    return height
   }
 
   // Static
