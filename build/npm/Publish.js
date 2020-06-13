@@ -30,27 +30,19 @@ class Publish {
   }
 
   run() {
+    const fseOptions = {
+      // Skip copying dot files
+      filter(src) {
+        return !path.basename(src).startsWith('.')
+      }
+    }
+
     // Publish files
     Plugins.forEach(module => {
-      const fseOptions = {
-        // Skip copying dot files
-        filter(src) {
-          return !path.basename(src).startsWith('.')
-        }
-      }
+      fse.copySync(path.resolve(__dirname, '../../', module.from), module.to, fseOptions)
 
-      try {
-        if (fse.existsSync(module.from)) {
-          fse.copySync(module.from, module.to, fseOptions)
-        } else {
-          fse.copySync(module.from.replace('node_modules/', '../'), module.to, fseOptions)
-        }
-
-        if (this.options.verbose) {
-          console.log(`Copied ${module.from} to ${module.to}`)
-        }
-      } catch (error) {
-        console.error(`Error: ${error}`)
+      if (this.options.verbose) {
+        console.log(`Copied ${module.from} to ${module.to}`)
       }
     })
   }
