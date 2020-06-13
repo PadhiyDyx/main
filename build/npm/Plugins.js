@@ -3,7 +3,7 @@
 const Plugins = [
   // jQuery
   {
-    from: 'node_modules/jquery/dist',
+    from: 'node_modules/jquery/dist/*.{js,map}',
     to: 'plugins/jquery'
   },
   // Popper

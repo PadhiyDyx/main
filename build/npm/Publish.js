@@ -4,6 +4,7 @@
 
 const path = require('path')
 const fse = require('fs-extra')
+const glob = require('glob')
 const Plugins = require('./Plugins')
 
 class Publish {
@@ -39,7 +40,11 @@ class Publish {
 
     // Publish files
     Plugins.forEach(module => {
-      fse.copySync(path.resolve(__dirname, '../../', module.from), module.to, fseOptions)
+      const files = glob.sync(module.from)
+
+      files.forEach(file => {
+        fse.copySync(file, path.join(module.to, path.basename(file)), fseOptions)
+      })
 
       if (this.options.verbose) {
         console.log(`Copied ${module.from} to ${module.to}`)
